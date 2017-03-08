@@ -217,6 +217,7 @@ class ExternalEditor:
         # Setup logging.
         global log_file
         log_file = mktemp(suffix = '-zopeedit-log.txt')
+        log_file = '/Users/fulvio/Desktop/zopeedit.log'
         # print log_file
         log_filehandler = logging.FileHandler(log_file)
         log_formatter = logging.Formatter(
@@ -706,6 +707,7 @@ class ExternalEditor:
         """ Launch external editor
         """
 
+        import pdb;pdb.set_trace()
         # Do we have an input file ?
         if self.input_file == '':
             fatalError(_("No input file. \n"
@@ -1555,7 +1557,9 @@ class EditorProcess:
                        '(%s):\n%s' % (self.command, e[2]))
 
     def startEditorOsx(self):
-        res = LSOpenFSRef(self.contentfile,None)
+        outLaunchedRef = None
+        res = LSOpenFSRef(self.contentfile,outLaunchedRef)
+        logger.info('outLaunchedRef {}'.format(outLaunchedRef))
 
     def startEditor(self):
         args = re.split(self.arg_re, self.command.strip())
@@ -1982,6 +1986,8 @@ def main():
     """
     args = sys.argv
     input_file=''
+
+    #import pdb;pdb.set_trace()
 
     if '--version' in args or '-v' in args:
         credits = ('Zope External Editor %s\n'
